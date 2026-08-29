@@ -1,0 +1,28 @@
+{
+  "name": "dsh-whale-console-workspace",
+  "private": true,
+  "version": "0.2.1-preview.1",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:preview": "node scripts/agent/build-preview.mjs",
+    "dev": "pnpm --filter @dsh-whale-console/launcher dev",
+    "dev:plugin": "pnpm --filter dsh-whale-console dev",
+    "docs:check": "node scripts/agent/check-doc-pairs.mjs",
+    "skill:check": "node scripts/agent/check-skill.mjs",
+    "agent:preflight": "node scripts/agent/preflight.mjs",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "verify": "pnpm docs:check && pnpm skill:check && pnpm typecheck && pnpm test && pnpm build",
+    "verify:artifacts": "node scripts/agent/verify-artifacts.mjs",
+    "pack:plugin": "pnpm --filter dsh-whale-console pack"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

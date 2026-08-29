@@ -1,0 +1,53 @@
+name: 问题报告（简体中文）
+description: 报告可复现的启动器或 DSH WebUI 插件问题。
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: 感谢协助改进 Preview。附加日志前，请移除个人路径、令牌和其他敏感信息。
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 受影响部分
+      options:
+        - macOS 启动器
+        - DSH WebUI 插件
+        - 两者均受影响
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: 版本信息
+      description: 请填写 WhaleConsole、DSH、macOS、Node.js 与 pnpm 版本。
+      placeholder: WhaleConsole 0.2.1-preview.1；DSH 0.1.1-rc.2；macOS 15；Node.js 24
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请提供能够稳定触发问题的最短操作步骤。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为与实际行为
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志或截图
+      description: 请遮盖令牌、用户名、主目录路径与其他隐私信息。
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已搜索现有 Issue，未发现相同问题。
+          required: true
+        - label: 我已从报告中移除敏感信息与个人信息。
+          required: true

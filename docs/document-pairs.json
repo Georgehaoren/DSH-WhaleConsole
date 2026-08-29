@@ -1,0 +1,26 @@
+{
+  "pairs": [
+    { "en": "README.md", "zh": "README.zh-CN.md" },
+    { "en": "INSTALL.md", "zh": "INSTALL.zh-CN.md" },
+    { "en": "AI_DISCLOSURE.md", "zh": "AI_DISCLOSURE.zh-CN.md" },
+    { "en": "ASSET_LICENSE.md", "zh": "ASSET_LICENSE.zh-CN.md" },
+    { "en": "CHANGELOG.md", "zh": "CHANGELOG.zh-CN.md" },
+    { "en": "CONTRIBUTING.md", "zh": "CONTRIBUTING.zh-CN.md" },
+    { "en": "LICENSE", "zh": "LICENSE.zh-CN.md", "crossLinks": false },
+    { "en": "SECURITY.md", "zh": "SECURITY.zh-CN.md" },
+    { "en": "docs/ARCHITECTURE.md", "zh": "docs/ARCHITECTURE.zh-CN.md" },
+    { "en": "docs/ARTWORK.md", "zh": "docs/ARTWORK.zh-CN.md" },
+    { "en": "docs/CHARACTERS.md", "zh": "docs/CHARACTERS.zh-CN.md" },
+    { "en": "docs/PREVIEW-CHECKLIST.md", "zh": "docs/PREVIEW-CHECKLIST.zh-CN.md" },
+    { "en": "docs/RELEASING.md", "zh": "docs/RELEASING.zh-CN.md" },
+    { "en": "packages/plugin/README.md", "zh": "packages/plugin/README.zh-CN.md" },
+    { "en": "packages/plugin/AI_DISCLOSURE.md", "zh": "packages/plugin/AI_DISCLOSURE.zh-CN.md" },
+    { "en": "packages/plugin/ASSET_LICENSE.md", "zh": "packages/plugin/ASSET_LICENSE.zh-CN.md" },
+    { "en": "packages/plugin/LICENSE", "zh": "packages/plugin/LICENSE.zh-CN.md", "crossLinks": false },
+    { "en": ".agents/skills/dsh-whale-console-install/SKILL.md", "zh": ".agents/skills/dsh-whale-console-install/SKILL.zh-CN.md" },
+    { "en": ".agents/skills/dsh-whale-console-install/references/RUNBOOK.md", "zh": ".agents/skills/dsh-whale-console-install/references/RUNBOOK.zh-CN.md" },
+    { "en": ".github/PULL_REQUEST_TEMPLATE/english.md", "zh": ".github/PULL_REQUEST_TEMPLATE/chinese.md", "crossLinks": false },
+    { "en": ".github/ISSUE_TEMPLATE/bug-report.yml", "zh": ".github/ISSUE_TEMPLATE/bug-report-zh.yml", "crossLinks": false },
+    { "en": ".github/ISSUE_TEMPLATE/feature-request.yml", "zh": ".github/ISSUE_TEMPLATE/feature-request-zh.yml", "crossLinks": false }
+  ]
+}

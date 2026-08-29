@@ -1,0 +1,42 @@
+name: Feature request (English)
+description: Propose a focused launcher, plugin, or skin-system improvement.
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Target surface
+      options:
+        - macOS launcher
+        - DSH WebUI plugin
+        - Shared skin system
+        - Documentation or release process
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user need before describing an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Project boundary
+      options:
+        - label: The request can use DSH additive extension points without replacing a core WebUI surface.
+          required: true
+        - label: Any proposed artwork is original and has a clear license.
+          required: true

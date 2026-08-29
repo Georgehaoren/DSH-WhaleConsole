@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "outDir": "lib/types",
+    "rootDir": "src",
+    "baseUrl": "../..",
+    "paths": {
+      "@dsh-whale-console/skins": ["packages/skins/lib/index.d.ts"]
+    }
+  },
+  "include": ["src"]
+}

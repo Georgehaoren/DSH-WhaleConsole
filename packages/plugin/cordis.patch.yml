@@ -1,0 +1,12 @@
+- insert:
+    - id: dsh-whale-console
+      name: dsh-whale-console
+      config:
+        enabled: true
+        skinId: harness-standard
+        theme: whale-engineer-dark
+        mascot: harness-engineer
+        position: right
+        scale: 100
+        motion: subtle
+        showDuringConversation: true
