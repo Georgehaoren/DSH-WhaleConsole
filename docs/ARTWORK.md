@@ -18,7 +18,13 @@ Source asset: `assets/skins/harness-engineer/harness-engineer-medium-delogo-v1.p
 
 A 2.5-to-3-head-tall Q/chibi form based on the whale-tail character sheet. It keeps the character's hairstyle, equipment silhouette, whale-tail hair ornament, normal human legs, and separate whale fluke while removing repeated logos, titles, and brand marks.
 
-Source asset: `assets/skins/harness-engineer/harness-engineer-chibi-delogo-v1.png`.
+The current runtime key art is based on the ChatGPT-redrawn v2 full-body illustration, with the matching v2 character sheet retained as a design reference. The earlier v1 cutout remains in the repository for provenance and comparison.
+
+Source assets:
+
+- `assets/skins/harness-engineer/harness-engineer-chibi-keyart-v2.png`
+- `assets/skins/harness-engineer/harness-engineer-chibi-character-sheet-v2.png`
+- `assets/skins/harness-engineer/harness-engineer-chibi-delogo-v1.png` (archived v1)
 
 ## Deep Sea Maid
 
@@ -34,6 +40,8 @@ The five skin cards use independent 1280x720 previews rendered from the real Wha
 
 PNG source masters are stored in `packages/skins/assets/thumbnails/source`. Runtime WebP files are stored one level above and are mapped by the shared skin registry's `thumbnailKey`.
 
-The original PNG generations for full-size character assets are retained outside the repository. Runtime copies are compressed WebP assets; Tauri icon derivatives are generated from the square source. The medium and chibi transparent PNG masters are retained under `assets/skins`, and thumbnail source masters are retained with the shared skin package.
+Run `pnpm artwork:thumbnails` on macOS to regenerate all five PNG masters and runtime WebP files from the shared WhaleConsole composition script.
+
+The original PNG generations for some full-size character assets are retained outside the repository. Runtime copies are compressed WebP assets; Tauri icon derivatives are generated from the square source. The medium and chibi PNG masters are retained under `assets/skins`, and thumbnail source masters are retained with the shared skin package.
 
 License: CC BY 4.0. Attribution: "DSH WhaleConsole contributors".

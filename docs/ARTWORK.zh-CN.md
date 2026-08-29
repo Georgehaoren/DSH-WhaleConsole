@@ -18,7 +18,13 @@ Preview 包含多组 AI 辅助创作的原创素材，均未使用 DeepSeek 或 
 
 基于鲸尾版设定图制作的约 2.5 至 3 头身Q版形态。保留发型、装备轮廓、鲸尾形发饰、正常双腿和独立鲸尾，同时移除重复 Logo、标题文字与品牌标记。
 
-源素材：`assets/skins/harness-engineer/harness-engineer-chibi-delogo-v1.png`。
+当前运行时立绘采用 ChatGPT 重绘的 v2 全身图，并保留配套 v2 人设图作为后续视觉制作参考；早期 v1 抠图继续留在仓库中，用于来源追溯与版本对比。
+
+源素材：
+
+- `assets/skins/harness-engineer/harness-engineer-chibi-keyart-v2.png`
+- `assets/skins/harness-engineer/harness-engineer-chibi-character-sheet-v2.png`
+- `assets/skins/harness-engineer/harness-engineer-chibi-delogo-v1.png`（归档 v1）
 
 ## 深海女仆
 
@@ -34,6 +40,8 @@ Preview 包含多组 AI 辅助创作的原创素材，均未使用 DeepSeek 或 
 
 PNG 源母版保存在 `packages/skins/assets/thumbnails/source`，运行时 WebP 文件保存在上一级目录，并通过共用皮肤注册表中的 `thumbnailKey` 进行映射。
 
-全尺寸角色素材的原始 PNG 生成文件保留在仓库之外。运行时副本为压缩后的 WebP，Tauri 图标衍生文件由方形源图生成。中号与Q版透明 PNG 母版保存在 `assets/skins`，皮肤缩略图的源母版则随共用皮肤包保存。
+在 macOS 上运行 `pnpm artwork:thumbnails`，可以通过共用的 WhaleConsole 构图脚本重新生成五张 PNG 母版和运行时 WebP 文件。
+
+部分全尺寸角色素材的原始 PNG 生成文件保留在仓库之外。运行时副本为压缩后的 WebP，Tauri 图标衍生文件由方形源图生成。中号与Q版 PNG 母版保存在 `assets/skins`，皮肤缩略图的源母版则随共用皮肤包保存。
 
 许可证：CC BY 4.0。署名方式：`DSH WhaleConsole contributors`。

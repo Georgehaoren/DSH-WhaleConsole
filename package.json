@@ -9,6 +9,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "build:preview": "node scripts/agent/build-preview.mjs",
+    "artwork:thumbnails": "bash scripts/render-skin-thumbnails.sh",
     "dev": "pnpm --filter @dsh-whale-console/launcher dev",
     "dev:plugin": "pnpm --filter dsh-whale-console dev",
     "docs:check": "node scripts/agent/check-doc-pairs.mjs",
