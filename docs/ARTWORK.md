@@ -34,6 +34,12 @@ An adult technical assistant with deep-to-light blue hair, fin-shaped ear orname
 
 An angular black whale orbiting a luminous cyan engineering cube on a graphite macOS icon plate.
 
+## Optional Icon Packs
+
+AI-assisted character alternatives are stored under `assets/icon-packs`. The first anime pack includes Harness Chibi and Deep Sea Maid Chibi PNG source illustrations with matching multi-resolution macOS ICNS files. These assets are optional and do not replace the default application icon automatically.
+
+See [Anime Extra Icon Pack](../assets/icon-packs/anime/README.md).
+
 ## Skin Thumbnails
 
 The five skin cards use independent 1280x720 previews rendered from the real WhaleConsole interface styles and the matching original character assets. They are fixed images rather than miniature interfaces assembled inside each card, so the launcher and plugin show the same composition.

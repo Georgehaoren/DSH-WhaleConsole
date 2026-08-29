@@ -8,6 +8,7 @@
 - 为启动器与插件的五张皮肤卡片分别新增固定的 16:9 WebUI 缩略图。
 - 使用实际 WhaleConsole 界面样式和对应原创角色素材渲染预览图。
 - 将Q版运行时立绘替换为 ChatGPT 重绘的 v2 角色图，保留配套人设图，并新增可重复执行的 macOS 缩略图生成器。
+- 新增可选二次元图标包，收录两张 ChatGPT 生成 PNG 源图、多分辨率 ICNS 成品与可复用的 macOS 转换器。
 - 新增 GitHub Actions CI、Dependabot、中英文 Issue/PR 模板与发布文档。
 - 在源码仓库与可分发插件包中新增中英文 AI 辅助创作声明。
 - 新增中英文源码安装文档、Agent 安装 Skill 与按需加载的详细操作规程。

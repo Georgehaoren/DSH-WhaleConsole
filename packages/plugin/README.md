@@ -9,10 +9,11 @@ Open the whale button in the WebUI sidebar to preview and switch among the stand
 ## Install
 
 ```sh
-dsh plugin --profile web add dsh-whale-console@preview
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add dsh-whale-console@preview
 ```
 
-For local source builds, pack the plugin and install the generated tarball from `dist/`.
+Use this command after the Preview package is published. For local source builds, pack the plugin and pass the absolute path of the generated `dist/` tarball to the same `pnpm dsh plugin --profile web add` command. A global `dsh` installation is not required for the source workflow.
 
 ## Compatibility
 

@@ -31,10 +31,14 @@ Read [references/RUNBOOK.md](references/RUNBOOK.md) when performing a build, ins
 5. Run `pnpm verify:artifacts` if verifying an existing build independently.
 6. Report the `.tgz`, macOS ZIP, and checksum paths. Do not install either artifact implicitly.
 
+For DSH plugin installation or diagnosis, prefer a user-specified or already-verified compatible DSH checkout and invoke `pnpm dsh` from that directory. Use a bare `dsh` command only after confirming that a global executable is actually available; never assume it is on `PATH`.
+
 ## Installation Boundaries
 
 - Before changing the `web` profile, show the exact DSH plugin command and obtain confirmation.
-- Use the official `dsh plugin --profile web add` command. Do not rewrite profile YAML, package metadata, or `node_modules` directly.
+- Use the official `pnpm dsh plugin --profile web add` flow. Do not rewrite profile YAML, package metadata, or `node_modules` directly. A local `.tgz` absolute path becomes part of the profile and lockfile, so tell the user to retain that file.
+- Installation commonly needs write access to the DSH checkout, `~/.dsh/profiles/web`, and the active pnpm store. Request only the minimal scope needed for that command. If it cannot be granted, stop and hand the confirmed complete command to the user for execution in a normal Terminal.
+- Do not make `danger-full-access`, unrestricted filesystem access, forced pnpm-store migration, or direct generated-file edits an installation workaround.
 - Before copying the app to `/Applications`, show the source and destination and obtain confirmation.
 - Do not disable Gatekeeper, remove quarantine attributes, sign with an ad hoc identity, or alter macOS security controls.
 - Do not stop a running service by process name. Prefer launcher lifecycle controls; otherwise operate only on an exact PID created and recorded in the current workflow.
@@ -48,4 +52,4 @@ Read [references/RUNBOOK.md](references/RUNBOOK.md) when performing a build, ins
 
 ## Validation and Reporting
 
-A successful complete build requires all repository checks to pass and all three Preview outputs to verify. Report skipped checks, unsupported architectures, unsigned-app status, and any DSH step that was not run. Redact credentials and personal paths before sharing logs.
+A successful complete build requires all repository checks to pass and all three Preview outputs to verify. `plugin list` may write the pnpm store index, and `--dump-config` may update `cordis.yml`; do not describe either as strictly read-only. When permissions block them, use the runbook's layered file checks and explicitly report any composition or runtime validation that remains incomplete. Report skipped checks, unsupported architectures, unsigned-app status, and any DSH step that was not run. Redact credentials and personal paths before sharing logs.

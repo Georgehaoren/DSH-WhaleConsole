@@ -18,6 +18,10 @@ async function exists(path) {
 
 const skill = await readFile(skillPath, 'utf8')
 const translated = await readFile(translatedPath, 'utf8')
+const runbookPath = resolve(skillRoot, 'references/RUNBOOK.md')
+const translatedRunbookPath = resolve(skillRoot, 'references/RUNBOOK.zh-CN.md')
+const runbook = await readFile(runbookPath, 'utf8')
+const translatedRunbook = await readFile(translatedRunbookPath, 'utf8')
 const frontmatter = skill.match(/^---\n([\s\S]*?)\n---/)
 if (!frontmatter) errors.push('SKILL.md is missing YAML frontmatter.')
 if (!frontmatter?.[1].match(/^name:\s*dsh-whale-console-install\s*$/m)) errors.push('Skill name must match its folder.')
@@ -27,6 +31,13 @@ if (description.length < 60) errors.push('Skill description is too short to rout
 for (const required of ['pnpm agent:preflight', 'pnpm build:preview', 'pnpm verify:artifacts']) {
   if (!skill.includes(required)) errors.push(`SKILL.md does not route through ${required}.`)
   if (!translated.includes(required)) errors.push(`SKILL.zh-CN.md does not route through ${required}.`)
+}
+
+for (const required of ['pnpm dsh plugin --profile web add', 'plugin list', '--dump-config']) {
+  if (!skill.includes(required)) errors.push(`SKILL.md does not preserve the installation rule: ${required}.`)
+  if (!translated.includes(required)) errors.push(`SKILL.zh-CN.md does not preserve the installation rule: ${required}.`)
+  if (!runbook.includes(required)) errors.push(`RUNBOOK.md does not preserve the installation rule: ${required}.`)
+  if (!translatedRunbook.includes(required)) errors.push(`RUNBOOK.zh-CN.md does not preserve the installation rule: ${required}.`)
 }
 
 for (const document of [skillPath, translatedPath]) {

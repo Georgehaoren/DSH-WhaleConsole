@@ -32,6 +32,12 @@ pnpm --filter @dsh-whale-console/launcher run tauri:build:app
 
 The app remains under `apps/launcher/src-tauri/target/release/bundle/macos/`. Do not copy it without approval.
 
+## Resolve the DSH Command and Permissions
+
+Prefer a compatible DSH checkout explicitly supplied by the user, already configured in the launcher, or selected through `DSH_REPO`. Treat defaults such as `~/deepseek-harness` only as candidates that must be checked. Do not clone, pull, or switch DSH revisions merely to install the plugin. Source environments do not guarantee a global `dsh` executable, so invoke `pnpm dsh` from the verified checkout by default. A bare `dsh` is optional only when `command -v dsh` actually succeeds.
+
+Before installation, identify and request minimally scoped write access to the DSH checkout, target `~/.dsh/profiles/web`, and that profile's active pnpm store. Read the store path from an existing `node_modules/.modules.yaml` `storeDir` when available. Do not rewrite it, force-reinstall dependencies, or migrate the store to work around permissions. If write access cannot be granted, stop and give the confirmed complete install command to the user for execution in a normal Terminal.
+
 ## Plugin-Only Build and Installation
 
 Build and inspect the package first:
@@ -47,7 +53,18 @@ After user confirmation, install it from the DSH checkout with an absolute tarba
 pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-<version>.tgz
 ```
 
-Use `pnpm dsh plugin --profile web list` and `pnpm dsh --profile web --dump-config` to confirm package identity and composition before restarting an existing service.
+After the official command succeeds, DSH maintains `dsh.profile.bundles` from each installed package's `dsh.bundle` declaration. Do not append the bundle manually or remove existing plugins. Record the `.tgz` path and checksum, and tell the user to retain the local archive because the profile and lockfile reference its path and integrity. If an existing profile references the target file, compare its version and checksum before repacking; different contents must not replace an installed archive under the same version and filename.
+
+Validate in this order before restarting or first launch:
+
+```sh
+pnpm dsh plugin --profile web list
+pnpm dsh --profile web --dump-config
+```
+
+Neither command is guaranteed to be read-only: the former may open the pnpm store SQLite index for writing, while the latter runs profile preparation and may create or update `cordis.yml`. If permissions block official validation, inspect the target profile `package.json` and `pnpm-lock.yaml`, `node_modules/<package>/package.json`, the `dsh.bundle.patch` and `dsh.client.platform` declarations, `cordis.patch.yml`, and both server and browser entry files in that order. When the browser entry expects `window`, use `node --check` for syntax rather than importing it into plain Node.
+
+File inspection proves installation state but does not fully replace composition or runtime validation. Report every command blocked by permissions. If DSH is running, restart that instance once after first adding the plugin. If its port is closed, the next normal launch is sufficient; do not create a meaningless start-then-restart cycle.
 
 ## Real DSH Composition Test
 
@@ -69,7 +86,9 @@ Only update when explicitly requested. Inspect local changes first, fetch withou
 - Environment failure: use `pnpm agent:preflight -- --json` and address only failed checks.
 - Type or test failure: stop at that layer and preserve its output.
 - Rust failure: run the locked Cargo check separately and report the first actionable error.
-- Plugin failure: inspect tar contents, DSH plugin list, composed config, boot entry, and client route in that order.
+- Plugin failure: inspect tar contents, profile dependencies and bundle list, installed package metadata, composed DSH config, boot entry, and client route in that order.
+- `plugin list` reports SQLite `unable to open database file`: first check minimally scoped write access to the active pnpm store. Do not infer corruption or force a store migration or reinstall from this error alone.
+- `--dump-config` reports a profile-write `EPERM`: composition preparation needs to write `cordis.yml`. Fall back to file inspection, report the missing composition check, and do not call the two methods equivalent.
 - Launcher startup failure: inspect the configured persistent log directory and current service ownership state.
 - Packaging failure: use `--bundles app`; DMG creation is outside the source-only Preview contract.
 

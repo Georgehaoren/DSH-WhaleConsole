@@ -13,6 +13,7 @@
     { "en": "docs/CHARACTERS.md", "zh": "docs/CHARACTERS.zh-CN.md" },
     { "en": "docs/PREVIEW-CHECKLIST.md", "zh": "docs/PREVIEW-CHECKLIST.zh-CN.md" },
     { "en": "docs/RELEASING.md", "zh": "docs/RELEASING.zh-CN.md" },
+    { "en": "assets/icon-packs/anime/README.md", "zh": "assets/icon-packs/anime/README.zh-CN.md" },
     { "en": "packages/plugin/README.md", "zh": "packages/plugin/README.zh-CN.md" },
     { "en": "packages/plugin/AI_DISCLOSURE.md", "zh": "packages/plugin/AI_DISCLOSURE.zh-CN.md" },
     { "en": "packages/plugin/ASSET_LICENSE.md", "zh": "packages/plugin/ASSET_LICENSE.zh-CN.md" },

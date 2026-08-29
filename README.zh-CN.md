@@ -108,13 +108,17 @@ pnpm --filter @dsh-whale-console/launcher tauri:dev
 
 ```sh
 pnpm --filter dsh-whale-console run pack
-dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
 ```
+
+这里使用 DSH 源码目录中的 `pnpm dsh`，因为源码安装环境不一定存在全局 `dsh` 命令。安装会更新 `~/.dsh/profiles/web` 和 pnpm Store；使用本地压缩包时，其绝对路径和完整性校验还会记录进 profile 与锁文件，因此请在卸载或改装发布版之前保留该文件及路径，也不要用不同内容覆盖同版本、同文件名的压缩包。
 
 发布 Preview npm 包后，计划使用以下命令安装：
 
 ```sh
-dsh plugin --profile web add dsh-whale-console@preview
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add dsh-whale-console@preview
 ```
 
 ## 验证

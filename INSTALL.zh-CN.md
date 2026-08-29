@@ -35,14 +35,27 @@ dist/SHA256SUMS-<version>.txt
 
 ## 安装插件
 
-安装插件会修改选定的 DSH profile。请先检查插件压缩包，并在用户授权该操作前停止。
+安装插件会修改选定的 DSH profile，并写入 pnpm Store。请先检查插件压缩包、确认目标 DSH 源码目录，并在用户授权该操作前停止。源码工作流不假定全局 `dsh` 命令存在；应在兼容的 DSH checkout 中使用 `pnpm dsh`：
 
 ```sh
 cd /absolute/path/to/deepseek-harness
 pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-<version>.tgz
 ```
 
-首次加入插件包需要重启一次 DSH。之后的皮肤切换由 WhaleConsole 内部处理，不需要再次调用构建 Agent。
+在受限 Agent 环境中，这条命令通常需要以下位置的最小范围写权限：DSH 源码目录、`~/.dsh/profiles/web` 和当前 pnpm Store（macOS 上常见为 `~/Library/pnpm/store`）。如果无法取得所需权限，应停止并将上面的完整命令交给用户在普通终端执行；不要改写 profile、伪造 Store 状态或申请不受限制的全盘访问来绕过问题。
+
+本地压缩包路径和完整性校验会记录进 profile 与 `pnpm-lock.yaml`。在卸载插件、重新安装新路径或改用发布版之前，请保留原始 `.tgz` 及其路径。不要在版本号不变时用另一次构建覆盖同名压缩包；需要改变包内容时应升级版本，或先为旧安装保留稳定副本并重新安装新路径。官方插件命令会根据已安装包的 `dsh.bundle` 声明自动维护 `dsh.profile.bundles`，无需手动编辑 Bundle 列表，也不会删除其他有效插件。
+
+安装后可以在 DSH 源码目录中验证：
+
+```sh
+pnpm dsh plugin --profile web list
+pnpm dsh --profile web --dump-config
+```
+
+这些验证命令不一定是纯只读操作：`plugin list` 可能以可写方式打开 pnpm Store 索引，`--dump-config` 可能生成或更新 profile 的 `cordis.yml`。权限不足时，可以降级检查 profile 的 `package.json`、`pnpm-lock.yaml`、已安装包的 `package.json`、`cordis.patch.yml` 与入口文件；这种文件检查不能替代最终组合验证，应在报告中明确说明跳过项。
+
+如果 DSH 正在运行，首次加入插件后需要重启该实例；如果 DSH 尚未运行，下次正常启动即可。之后的皮肤切换由 WhaleConsole 内部处理，不需要再次调用构建 Agent。
 
 ## 安装启动器
 
@@ -64,6 +77,9 @@ open "DSH WhaleConsole.app"
 .agents/skills/dsh-whale-console-install/SKILL.zh-CN.md，并按照源码构建流程
 执行。环境检查、构建和产物验证必须使用仓库提供的脚本。安装系统依赖、
 修改 DSH profile、停止服务或将应用复制到 /Applications 前必须询问我。
+安装插件时使用已确认 DSH 源码目录中的 pnpm dsh，只申请 DSH checkout、
+目标 profile 与 pnpm Store 所需的最小写权限；权限不足时把完整命令交给我，
+不要改写 profile 或迁移 Store。验证命令的写入副作用按 Runbook 处理。
 不要提交代码、创建远程仓库、推送内容、修改 Shell 配置或关闭 macOS
 安全机制。
 ```
@@ -76,6 +92,7 @@ open "DSH WhaleConsole.app"
 - 除非用户明确要求更新源码，否则不要执行 `git pull`。
 - 不要按进程名结束进程。由 WhaleConsole 启动器管理它自己创建的 DSH 进程组。
 - 不要直接编辑 DSH profile YAML 或 `node_modules`，应使用 DSH 官方插件命令。
+- Agent 只应申请安装所需目录的最小权限；不要把 `danger-full-access`、全盘访问或关闭沙箱写成通用安装步骤。
 - 不要公开未经遮盖的日志、主目录路径、凭据或 API 密钥。
 
 ## 故障排查

@@ -8,6 +8,7 @@ English | [简体中文](CHANGELOG.zh-CN.md)
 - Added one fixed 16:9 WebUI thumbnail to each of the five launcher and plugin skin cards.
 - Rendered the previews from the real WhaleConsole interface styles and matching original character artwork.
 - Replaced the chibi runtime key art with the ChatGPT-redrawn v2 character, retained its matching character sheet, and added a reproducible macOS thumbnail renderer.
+- Added an optional anime icon pack with two ChatGPT-generated PNG sources, multi-resolution ICNS outputs, and a reusable macOS converter.
 - Added GitHub Actions CI, Dependabot, bilingual issue and pull request templates, and release documentation.
 - Added bilingual AI-assisted creation disclosures to the repository and distributable plugin package.
 - Added bilingual source-install documents, an Agent installation Skill, and a progressively disclosed runbook.

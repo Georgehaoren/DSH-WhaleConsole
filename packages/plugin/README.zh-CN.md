@@ -9,10 +9,11 @@ DSH WhaleConsole（中文名：DSH 鲸控台）是一款非官方 Preview 插件
 ## 安装
 
 ```sh
-dsh plugin --profile web add dsh-whale-console@preview
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add dsh-whale-console@preview
 ```
 
-从本地源码构建时，请先打包插件，再安装 `dist/` 中生成的压缩包。
+Preview 包发布后可以使用以上命令。从本地源码构建时，请先打包插件，再用同一个 `pnpm dsh plugin --profile web add` 命令安装 `dist/` 中生成的压缩包绝对路径。源码环境不要求全局安装 `dsh`。
 
 ## 兼容性
 

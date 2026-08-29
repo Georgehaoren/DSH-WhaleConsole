@@ -19,7 +19,7 @@
     "typecheck": "pnpm -r typecheck",
     "verify": "pnpm docs:check && pnpm skill:check && pnpm typecheck && pnpm test && pnpm build",
     "verify:artifacts": "node scripts/agent/verify-artifacts.mjs",
-    "pack:plugin": "pnpm --filter dsh-whale-console pack"
+    "pack:plugin": "pnpm --filter dsh-whale-console run pack"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",

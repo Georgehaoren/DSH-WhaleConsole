@@ -108,13 +108,17 @@ The package is not published to npm yet. Build a local tarball and install it in
 
 ```sh
 pnpm --filter dsh-whale-console run pack
-dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
 ```
+
+This uses `pnpm dsh` from the DSH checkout because source installations do not necessarily provide a global `dsh` command. Installation updates `~/.dsh/profiles/web` and the pnpm store. A local tarball's absolute path and integrity are also recorded in the profile and lockfile, so keep that file at the same path until the plugin is removed or replaced by a registry release, and do not overwrite the same version and filename with different contents.
 
 After a registry Preview is published, the intended command is:
 
 ```sh
-dsh plugin --profile web add dsh-whale-console@preview
+cd /absolute/path/to/deepseek-harness
+pnpm dsh plugin --profile web add dsh-whale-console@preview
 ```
 
 ## Verify

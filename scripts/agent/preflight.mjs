@@ -10,7 +10,8 @@ const json = args.includes('--json')
 const allowUnsupportedArch = args.includes('--allow-unsupported-arch')
 const language = args.includes('--lang=zh-CN') ? 'zh-CN' : 'en'
 const dshArg = args.find(value => value.startsWith('--dsh-repo='))
-const dshRepo = dshArg ? resolve(dshArg.slice('--dsh-repo='.length)) : null
+const dshRepoInput = dshArg?.slice('--dsh-repo='.length) || process.env.DSH_REPO
+const dshRepo = dshRepoInput ? resolve(dshRepoInput) : null
 const rootManifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
 const results = []
 const commandEnvironment = {
@@ -60,6 +61,14 @@ add(
   pnpm ? `pnpm：${pnpm}（工作区版本：${expectedPnpm}）` : 'PATH 中找不到 pnpm。',
 )
 
+const globalDsh = command('which', ['dsh'])
+add(
+  'dsh-global',
+  globalDsh ? 'ok' : 'warning',
+  globalDsh ? `Global dsh: ${globalDsh}` : 'Global dsh was not found; use pnpm dsh from a verified DSH checkout.',
+  globalDsh ? `全局 dsh：${globalDsh}` : '找不到全局 dsh；请从已确认的 DSH 源码目录使用 pnpm dsh。',
+)
+
 for (const [id, executable, commandArgs] of [
   ['git', 'git', ['--version']],
   ['rustc', 'rustc', ['--version']],
@@ -83,7 +92,18 @@ for (const path of ['pnpm-lock.yaml', 'apps/launcher/src-tauri/Cargo.lock', 'pac
 
 if (dshRepo) {
   const manifest = resolve(dshRepo, 'package.json')
-  add('dsh-repo', await isFile(manifest) ? 'ok' : 'error', `DSH checkout: ${dshRepo}`, `DSH 源码目录：${dshRepo}`)
+  const manifestExists = await isFile(manifest)
+  add('dsh-repo', manifestExists ? 'ok' : 'error', `DSH checkout: ${dshRepo}`, `DSH 源码目录：${dshRepo}`)
+  if (manifestExists) {
+    const dshManifest = JSON.parse(await readFile(manifest, 'utf8'))
+    const hasDshScript = typeof dshManifest.scripts?.dsh === 'string'
+    add(
+      'dsh-checkout-command',
+      hasDshScript ? 'ok' : 'error',
+      hasDshScript ? `DSH source command: (cd ${dshRepo} && pnpm dsh)` : 'The DSH checkout has no pnpm dsh script.',
+      hasDshScript ? `DSH 源码命令：(cd ${dshRepo} && pnpm dsh)` : '该 DSH 源码目录没有 pnpm dsh 脚本。',
+    )
+  }
 }
 
 if (json) {

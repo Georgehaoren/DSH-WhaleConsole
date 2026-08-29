@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "anime",
+  "name": {
+    "en": "Anime Extra Icon Pack",
+    "zh-CN": "二次元额外图标包"
+  },
+  "icons": [
+    {
+      "id": "harness-chibi-v-sign",
+      "character": "harness-chibi",
+      "name": {
+        "en": "Harness Chibi V Sign",
+        "zh-CN": "Q版 Harness 娘胜利手势"
+      },
+      "source": "harness-chibi-v-sign.png",
+      "macOS": "harness-chibi-v-sign.icns"
+    },
+    {
+      "id": "deep-sea-maid-chibi-wave",
+      "character": "deep-sea-maid-chibi",
+      "name": {
+        "en": "Deep Sea Maid Chibi Wave",
+        "zh-CN": "Q版深海女仆挥手"
+      },
+      "source": "deep-sea-maid-chibi-wave.png",
+      "macOS": "deep-sea-maid-chibi-wave.icns"
+    }
+  ]
+}

@@ -31,10 +31,14 @@ description: 在受支持的 macOS 系统上从源码构建、打包、安装、
 5. 单独验证已有构建时，运行 `pnpm verify:artifacts -- --lang=zh-CN`。
 6. 报告 `.tgz`、macOS ZIP 与校验文件路径，不要默认安装任何产物。
 
+安装或诊断 DSH 插件时，优先使用用户指定或已经确认的兼容 DSH checkout，并从该目录调用 `pnpm dsh`。只有实际确认全局 `dsh` 可用时才可以使用裸命令；不要假定它位于 `PATH`。
+
 ## 安装权限边界
 
 - 修改 `web` profile 前，展示完整 DSH 插件命令并获得确认。
-- 使用官方 `dsh plugin --profile web add` 命令，不要直接重写 profile YAML、包元数据或 `node_modules`。
+- 使用官方 `pnpm dsh plugin --profile web add` 流程，不要直接重写 profile YAML、包元数据或 `node_modules`。本地 `.tgz` 的绝对路径会进入 profile 与锁文件，应提醒用户保留该文件。
+- 安装通常需要对 DSH checkout、`~/.dsh/profiles/web` 和当前 pnpm Store 的写权限。只申请完成该命令所需的最小范围；如果权限无法取得，停止并把已确认的完整命令交给用户在普通终端执行。
+- 不要把 `danger-full-access`、全盘访问、强制迁移 pnpm Store 或直接修改生成文件当作安装方案。
 - 将应用复制到 `/Applications` 前，展示来源和目标路径并获得确认。
 - 不要关闭 Gatekeeper、移除隔离属性、使用临时身份签名或修改 macOS 安全机制。
 - 不要按进程名停止服务。优先使用启动器生命周期控制；否则只能操作当前流程创建并记录的精确 PID。
@@ -48,4 +52,4 @@ description: 在受支持的 macOS 系统上从源码构建、打包、安装、
 
 ## 验证与报告
 
-完整构建成功要求仓库全部检查通过，并验证三类 Preview 输出。报告被跳过的检查、不受支持的架构、应用未签名状态以及未执行的 DSH 步骤。对外分享日志前必须遮盖凭据和个人路径。
+完整构建成功要求仓库全部检查通过，并验证三类 Preview 输出。`plugin list` 可能写 pnpm Store 索引，`--dump-config` 可能更新 `cordis.yml`；不要把它们描述为纯只读命令。权限不足时按 Runbook 进行分层文件检查，并明确报告未完成的组合或运行时验证。报告被跳过的检查、不受支持的架构、应用未签名状态以及未执行的 DSH 步骤。对外分享日志前必须遮盖凭据和个人路径。
