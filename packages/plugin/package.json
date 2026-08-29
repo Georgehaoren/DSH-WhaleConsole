@@ -34,7 +34,7 @@
     "test": "vitest run",
     "test:composition": "node scripts/verify-dsh-composition.mjs",
     "typecheck": "tsc -p tsconfig.json",
-    "pack": "npm run build && npm_config_cache=${TMPDIR:-/tmp}/dsh-whale-console-npm-cache npm pack --pack-destination ../../dist"
+    "pack": "npm run build && node scripts/pack.mjs"
   },
   "dsh": {
     "bundle": {

@@ -52,6 +52,7 @@ run('pnpm', ['typecheck'])
 run('pnpm', ['test'])
 run('pnpm', ['build'])
 run('cargo', ['check', '--locked', '--manifest-path', 'apps/launcher/src-tauri/Cargo.toml'])
+if (!dryRun) await mkdir(dist, { recursive: true })
 run('pnpm', ['--filter', 'dsh-whale-console', 'run', 'pack'])
 if (withComposition) {
   if (!process.env.DSH_REPO) {
@@ -68,7 +69,6 @@ if (dryRun) {
 }
 
 if (!(await isDirectory(appBundle))) throw new Error(`Tauri app bundle was not created: ${appBundle}`)
-await mkdir(dist, { recursive: true })
 await rm(appZip, { force: true })
 run('ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', appBundle, appZip])
 
