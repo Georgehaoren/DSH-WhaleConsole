@@ -21,6 +21,8 @@ English | [简体中文](PREVIEW-CHECKLIST.zh-CN.md)
 - [x] Bilingual source-install entry, Agent Skill, and detailed runbook included.
 - [x] One shared script path handles preflight, build, artifact verification, and document-pair checks.
 - [x] Unofficial-project disclaimer included.
+- [x] Publishable package links to the public repository and uses an owner-specific macOS bundle identifier.
+- [x] Default bilingual pull request template, bilingual conduct policy, and private vulnerability reporting included.
 
 ## Before Public Distribution
 

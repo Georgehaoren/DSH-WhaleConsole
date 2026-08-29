@@ -4,6 +4,8 @@ English | [简体中文](CONTRIBUTING.zh-CN.md)
 
 Keep changes compatible with the current DSH baseline and its additive extension points.
 
+Participation in project issues, discussions, pull requests, and other community spaces is governed by the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 Open an issue before starting a broad compatibility change, a new plugin surface, or artwork that changes an established character design. Small bug fixes and documentation corrections can go directly to a focused pull request.
 
 Create a branch from `main`, keep commits scoped, and update English and Simplified Chinese documentation together. Skin changes should update the shared registry in `packages/skins`; the launcher and plugin must not define conflicting skin identifiers or thumbnail mappings.

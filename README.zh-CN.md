@@ -56,6 +56,7 @@ dist/                本地构建的 Preview 产物
 - [发布流程](docs/RELEASING.zh-CN.md)
 - [安全策略](SECURITY.zh-CN.md)
 - [参与贡献](CONTRIBUTING.zh-CN.md)
+- [行为准则](CODE_OF_CONDUCT.zh-CN.md)
 - [更新日志](CHANGELOG.zh-CN.md)
 - [素材许可证](ASSET_LICENSE.zh-CN.md)
 - [AI 辅助创作声明](AI_DISCLOSURE.zh-CN.md)

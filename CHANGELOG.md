@@ -15,6 +15,8 @@ English | [简体中文](CHANGELOG.zh-CN.md)
 - Added deterministic preflight, Preview build, artifact verification, document-pair, and Skill validation scripts.
 - Pinned the verified Node.js and CI Rust toolchains, selected local stable Rust, and made CI run the source-only Preview builder.
 - Prepared the workspace as a public source repository with generated artifacts and local caches excluded.
+- Added public npm package links and a stable, owner-specific macOS bundle identifier.
+- Added a default bilingual pull request template, bilingual code of conduct, and an explicit private vulnerability reporting entry point.
 
 ## 0.2.0-preview.1
 

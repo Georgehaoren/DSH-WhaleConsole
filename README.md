@@ -56,6 +56,7 @@ dist/                Locally built Preview artifacts
 - [Release process](docs/RELEASING.md)
 - [Security policy](SECURITY.md)
 - [Contributing](CONTRIBUTING.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 - [Changelog](CHANGELOG.md)
 - [Asset license](ASSET_LICENSE.md)
 - [AI-assisted creation disclosure](AI_DISCLOSURE.md)

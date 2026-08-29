@@ -16,4 +16,6 @@ English | [简体中文](SECURITY.zh-CN.md)
 
 ## Reporting
 
-Open a private security report with a minimal reproduction, affected version, and impact. Do not include API keys, credentials, or personal logs.
+Use the repository Security tab's **Report a vulnerability** button to submit a private report with a minimal reproduction, affected version, and impact.
+
+Do not include API keys, credentials, personal logs, or unrelated local paths in the report.
