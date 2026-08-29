@@ -88,7 +88,7 @@
     "@deepseek-ai/dsh-settings": "0.1.1-rc.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.28.2",
     "react": "^19.2.0"
   },
   "keywords": ["deepseek", "dsh", "theme", "webui", "launcher"]
