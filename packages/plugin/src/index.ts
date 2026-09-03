@@ -1,9 +1,9 @@
 import type { Context } from '@deepseek-ai/cordis'
-import { installSettingsSection, settingsNamespace } from '@deepseek-ai/dsh-settings'
+import type {} from '@deepseek-ai/dsh-settings'
 import z from '@deepseek-ai/schemastery'
 
 export const name = 'dsh-whale-console'
-export const WHALE_CONSOLE_NAMESPACE = settingsNamespace('dsh-whale-console')
+export const WHALE_CONSOLE_NAMESPACE = 'dsh-whale-console'
 
 export type WhaleConsoleSkin = 'harness-standard' | 'harness-medium' | 'harness-chibi' | 'maid-standard' | 'dual-standard'
 export type WhaleConsolePosition = 'left' | 'right'
@@ -30,15 +30,17 @@ export const Config: z<Config> = z.object({
 
 export function apply(ctx: Context, config: Config): void {
   let source = (): Config => config
-  installSettingsSection(ctx, WHALE_CONSOLE_NAMESPACE, Config, config, {
-    validate: (value) => {
-      if (value.scale < 70 || value.scale > 140) {
-        throw new Error('WhaleConsole mascot scale must be between 70 and 140.')
-      }
-    },
-    setSource: current => { source = current },
-    onChange: () => {
-      source()
-    },
+  ctx.inject(['settings'], (settingsCtx) => {
+    settingsCtx.settings.installSection(ctx, WHALE_CONSOLE_NAMESPACE, Config, config, {
+      validate: (value) => {
+        if (value.scale < 70 || value.scale > 140) {
+          throw new Error('WhaleConsole mascot scale must be between 70 and 140.')
+        }
+      },
+      setSource: current => { source = current },
+      onChange: () => {
+        source()
+      },
+    })
   })
 }

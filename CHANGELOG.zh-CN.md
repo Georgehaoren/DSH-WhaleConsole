@@ -2,6 +2,15 @@
 
 [English](CHANGELOG.md) | 简体中文
 
+## 0.3.0-preview.1
+
+- 将兼容基线升级到 DeepSeek Harness `0.1.2-rc.1`。
+- 将 Host 设置注册从已移除的顶层辅助函数迁移到 `SettingsProvider.installSection`。
+- 使用当前 Cordis 客户端上下文与显式 renderer 契约，替代已移除的 `dsh-client-runtime` 上下文类型。
+- 对齐 DSH Peer 依赖、Cordis、Schemastery，以及插件浏览器构建所使用的上游 React 18 运行时。
+- 适配 DSH `0.1.2` 浏览器会话令牌交换，并让启动器界面继续显示不含令牌的服务地址；组合测试同步走认证流程。
+- 让环境预检与组合测试拒绝不兼容的 DSH 源码版本，并新增设置 Provider 安装路径的回归测试。
+
 ## 0.2.1-preview.1
 
 - 在首次源码发布前确定公开项目名为 DSH WhaleConsole（DSH 鲸控台）。

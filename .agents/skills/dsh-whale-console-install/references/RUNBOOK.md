@@ -34,7 +34,7 @@ The app remains under `apps/launcher/src-tauri/target/release/bundle/macos/`. Do
 
 ## Resolve the DSH Command and Permissions
 
-Prefer a compatible DSH checkout explicitly supplied by the user, already configured in the launcher, or selected through `DSH_REPO`. Treat defaults such as `~/deepseek-harness` only as candidates that must be checked. Do not clone, pull, or switch DSH revisions merely to install the plugin. Source environments do not guarantee a global `dsh` executable, so invoke `pnpm dsh` from the verified checkout by default. A bare `dsh` is optional only when `command -v dsh` actually succeeds.
+Prefer a compatible DSH checkout explicitly supplied by the user, already configured in the launcher, or selected through `DSH_REPO`. The current Preview requires DSH `0.1.2-rc.1`; run preflight with `--dsh-repo=/absolute/path` and do not treat another release candidate as compatible without composition evidence. Treat defaults such as `~/deepseek-harness` only as candidates that must be checked. Do not clone, pull, or switch DSH revisions merely to install the plugin. Source environments do not guarantee a global `dsh` executable, so invoke `pnpm dsh` from the verified checkout by default. A bare `dsh` is optional only when `command -v dsh` actually succeeds.
 
 Before installation, identify and request minimally scoped write access to the DSH checkout, target `~/.dsh/profiles/web`, and that profile's active pnpm store. Read the store path from an existing `node_modules/.modules.yaml` `storeDir` when available. Do not rewrite it, force-reinstall dependencies, or migrate the store to work around permissions. If write access cannot be granted, stop and give the confirmed complete install command to the user for execution in a normal Terminal.
 
@@ -75,7 +75,7 @@ DSH_REPO=/absolute/path/to/deepseek-harness \
   pnpm --filter dsh-whale-console test:composition
 ```
 
-This test may create package-manager temporary files in the DSH checkout. Obtain filesystem permission when the execution environment requires it.
+This test may create package-manager temporary files in the DSH checkout. Obtain filesystem permission when the execution environment requires it. DSH `0.1.2` protects WebUI with a browser-session exchange; the test consumes the process launch token, stores only the returned cookie in memory, and redacts the token from failures.
 
 ## Update and Rebuild
 
@@ -89,7 +89,7 @@ Only update when explicitly requested. Inspect local changes first, fetch withou
 - Plugin failure: inspect tar contents, profile dependencies and bundle list, installed package metadata, composed DSH config, boot entry, and client route in that order.
 - `plugin list` reports SQLite `unable to open database file`: first check minimally scoped write access to the active pnpm store. Do not infer corruption or force a store migration or reinstall from this error alone.
 - `--dump-config` reports a profile-write `EPERM`: composition preparation needs to write `cordis.yml`. Fall back to file inspection, report the missing composition check, and do not call the two methods equivalent.
-- Launcher startup failure: inspect the configured persistent log directory and current service ownership state.
+- Launcher startup failure: inspect the configured persistent log directory and current service ownership state. On DSH `0.1.2`, a plain loopback request returning `401` means the browser-session exchange did not happen; confirm that an owned process printed its authenticated launch URL, but redact the token from every report.
 - Packaging failure: use `--bundles app`; DMG creation is outside the source-only Preview contract.
 
 Do not solve diagnosis by disabling security controls, editing dependency output, deleting lockfiles, or reinstalling unrelated tools.

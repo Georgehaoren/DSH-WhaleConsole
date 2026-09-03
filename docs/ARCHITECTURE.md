@@ -18,7 +18,7 @@ The launcher never injects CSS into an arbitrary page. WebUI customization is de
 - `dsh.bundle.patch` mounts the Host half from `cordis.patch.yml`.
 - `dsh.client` exposes the Web client from `./client`.
 
-The Host half registers the `dsh-whale-console` settings namespace with Schemastery. The browser half registers three palettes, exposes five skins, and contributes to these additive slots:
+The Host half attaches to the optional `settings` service and registers the `dsh-whale-console` namespace through the DSH `SettingsProvider.installSection` contract. The browser half registers three palettes, exposes five skins, and contributes to these additive slots:
 
 - `shell.overlay`: mascot and online status.
 - `sidebar.footer.action`: quick panel entry.
@@ -48,6 +48,8 @@ The process is assigned its own Unix process group. Stop and application exit se
 
 The child receives a `PATH` composed from the login shell plus the detected `pnpm` and Node.js directories. Source-tree file watchers use polling for reliable startup under macOS GUI process limits. Logs default to `~/Library/Logs/DSH WhaleConsole/dsh-whale-console.log`; the user may select another absolute or home-relative directory.
 
+DSH `0.1.2` protects WebUI with a browser-session exchange. For an owned process, WhaleConsole waits for the process-specific authenticated launch URL in DSH output before reporting the service ready, keeps the clean loopback origin as the displayed address, and passes the launch URL only when opening the WebUI webview. The log file is restricted to the current macOS user.
+
 A reachable port without an owned child is classified as an external service. WhaleConsole can open it but will not stop or restart it.
 
 The WebUI window has a separate label and receives no Tauri command capability. The main window hides to the menu bar; Quit performs process cleanup.
@@ -64,7 +66,7 @@ The full Preview builder deliberately uses `tauri build --bundles app`. DMG crea
 
 ## Compatibility
 
-- DSH: `0.1.1-rc.2`
+- DSH: `0.1.2-rc.1`
 - Node.js: `^22.19.0 || >=24.0.0`
 - pnpm: tested with `11.7.0` and `11.24.0`
 - macOS: 12 or newer, arm64 Preview artifact

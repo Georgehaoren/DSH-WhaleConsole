@@ -38,4 +38,12 @@ describe('launcher preview contract', () => {
     expect(rust).toContain('config.log_dir')
     expect(rust).toContain('create_dir_all')
   })
+
+  it('uses the DSH browser-session launch URL without exposing it as the service address', async () => {
+    const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+    const rust = await readFile(new URL('../src-tauri/src/lib.rs', import.meta.url), 'utf8')
+    expect(rust).toContain('discover_launch_url')
+    expect(rust).toContain('/?token=')
+    expect(app).toContain('launcher.status.launchUrl ?? launcher.status.url')
+  })
 })

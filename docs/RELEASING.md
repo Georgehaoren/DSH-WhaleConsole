@@ -33,7 +33,7 @@ The builder generates SHA-256 checksums and verifies both archives. Keep local b
 
 ## 4. Publish
 
-1. Create an annotated tag such as `v0.2.1-preview.1` from a clean `main` branch.
+1. Create an annotated tag such as `v0.3.0-preview.1` from a clean `main` branch.
 2. Push the branch and tag.
 3. Create a GitHub Preview release from the matching changelog entry.
 4. Keep the locally built plugin archive, unsigned app, and checksum file off the source-only GitHub release.

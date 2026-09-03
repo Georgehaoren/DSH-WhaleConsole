@@ -6,7 +6,7 @@ const isTauri = '__TAURI_INTERNALS__' in window
 const mockEnvironment: EnvironmentInfo = {
   projectDir: '~/deepseek-harness',
   pnpmPath: 'pnpm',
-  dshVersion: '0.1.1-rc.2',
+  dshVersion: '0.1.2-rc.1',
   nodeVersion: '24.20.0',
   native: false,
 }
@@ -45,6 +45,7 @@ export const launcherBridge = {
       pid: 42861,
       startedAt: Date.now(),
       url: `http://127.0.0.1:${config.port}`,
+      launchUrl: `http://127.0.0.1:${config.port}/?token=browser-preview`,
       logPath: logPath(config),
     }
     await pause(950)
@@ -55,7 +56,7 @@ export const launcherBridge = {
   async stop(): Promise<ServiceStatus> {
     if (isTauri) return invoke('stop_service')
     await pause(500)
-    mockStatus = { ...mockStatus, phase: 'stopped', message: '服务已停止', owned: false, pid: undefined }
+    mockStatus = { ...mockStatus, phase: 'stopped', message: '服务已停止', owned: false, pid: undefined, launchUrl: undefined }
     return mockStatus
   },
 

@@ -33,6 +33,8 @@ struct ServiceStatus {
     phase: String,
     pid: Option<u32>,
     url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    launch_url: Option<String>,
     message: String,
     owned: bool,
     log_path: String,
@@ -54,6 +56,7 @@ struct ManagedService {
     port: u16,
     started_at: Option<u64>,
     log_path: PathBuf,
+    launch_url: Option<String>,
 }
 
 impl Default for ManagedService {
@@ -63,6 +66,7 @@ impl Default for ManagedService {
             port: 3080,
             started_at: None,
             log_path: expand_home("~/Library/Logs/DSH WhaleConsole").join("dsh-whale-console.log"),
+            launch_url: None,
         }
     }
 }
@@ -169,6 +173,15 @@ fn configured_log_path(config: &LauncherConfig) -> Result<PathBuf, String> {
     Ok(directory.join("dsh-whale-console.log"))
 }
 
+fn discover_launch_url(log_path: &Path, port: u16) -> Option<String> {
+    let text = std::fs::read_to_string(log_path).ok()?;
+    let prefix = format!("http://127.0.0.1:{port}/?token=");
+    text.split_whitespace()
+        .rev()
+        .find(|word| word.starts_with(&prefix))
+        .map(|word| word.trim_end_matches([')', ']', '}']).to_string())
+}
+
 fn make_status(service: &mut ManagedService, port: u16) -> ServiceStatus {
     let url = format!("http://127.0.0.1:{port}");
     let log_path = service.log_path.to_string_lossy().to_string();
@@ -182,19 +195,36 @@ fn make_status(service: &mut ManagedService, port: u16) -> ServiceStatus {
                 child_alive = true;
                 owned = true;
                 pid = Some(child.id());
+                if service.launch_url.is_none() {
+                    service.launch_url = discover_launch_url(&service.log_path, port);
+                }
             }
             Ok(Some(_)) | Err(_) => {
                 service.child = None;
                 service.started_at = None;
+                service.launch_url = None;
             }
         }
     }
 
     if is_port_open(port) {
+        if owned && service.launch_url.is_none() {
+            return ServiceStatus {
+                phase: "starting".into(),
+                pid,
+                url,
+                launch_url: None,
+                message: "正在等待 WebUI 认证地址…".into(),
+                owned,
+                log_path,
+                started_at: service.started_at,
+            };
+        }
         return ServiceStatus {
             phase: if owned { "ready" } else { "external" }.into(),
             pid,
             url,
+            launch_url: service.launch_url.clone(),
             message: if owned {
                 "服务已就绪"
             } else {
@@ -212,6 +242,7 @@ fn make_status(service: &mut ManagedService, port: u16) -> ServiceStatus {
             phase: "starting".into(),
             pid,
             url,
+            launch_url: service.launch_url.clone(),
             message: "正在等待 WebUI 端口就绪…".into(),
             owned,
             log_path,
@@ -222,6 +253,7 @@ fn make_status(service: &mut ManagedService, port: u16) -> ServiceStatus {
             phase: "stopped".into(),
             pid: None,
             url,
+            launch_url: None,
             message: "服务尚未启动".into(),
             owned: false,
             log_path,
@@ -272,12 +304,19 @@ fn start_service(
 
     service.port = config.port;
     service.log_path = log_path;
+    service.launch_url = None;
     let mut log = File::create(&service.log_path).map_err(|error| {
         format!(
             "无法创建日志文件 {}：{error}",
             service.log_path.to_string_lossy()
         )
     })?;
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(&service.log_path, std::fs::Permissions::from_mode(0o600))
+            .map_err(|error| format!("无法保护日志文件权限：{error}"))?;
+    }
     writeln!(
         log,
         "[WhaleConsole] starting DSH from {} with {} on port {}",
@@ -324,6 +363,7 @@ fn start_service(
 
 fn terminate_service(service: &mut ManagedService) -> Result<(), String> {
     let Some(mut child) = service.child.take() else {
+        service.launch_url = None;
         return Ok(());
     };
 
@@ -339,6 +379,7 @@ fn terminate_service(service: &mut ManagedService) -> Result<(), String> {
             .is_some()
         {
             service.started_at = None;
+            service.launch_url = None;
             return Ok(());
         }
         thread::sleep(Duration::from_millis(100));
@@ -350,6 +391,7 @@ fn terminate_service(service: &mut ManagedService) -> Result<(), String> {
     }
     let _ = child.wait();
     service.started_at = None;
+    service.launch_url = None;
     Ok(())
 }
 

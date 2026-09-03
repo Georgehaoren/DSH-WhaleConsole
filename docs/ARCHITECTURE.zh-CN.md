@@ -18,7 +18,7 @@ WhaleConsole 使用两个相互独立的界面：
 - `dsh.bundle.patch` 通过 `cordis.patch.yml` 挂载 Host 部分。
 - `dsh.client` 通过 `./client` 暴露 Web 客户端。
 
-Host 部分使用 Schemastery 注册 `dsh-whale-console` 设置命名空间。浏览器部分注册三套配色、提供五套皮肤，并向以下增量插槽提供内容：
+Host 部分连接可选的 `settings` 服务，并通过 DSH 的 `SettingsProvider.installSection` 契约注册 `dsh-whale-console` 设置命名空间。浏览器部分注册三套配色、提供五套皮肤，并向以下增量插槽提供内容：
 
 - `shell.overlay`：角色悬浮层与在线状态。
 - `sidebar.footer.action`：快捷面板入口。
@@ -48,6 +48,8 @@ pnpm dsh web --no-open --port <port>
 
 子进程获得的 `PATH` 由登录 Shell、检测到的 `pnpm` 目录和 Node.js 目录组合而成。源码目录的文件监听使用轮询，以便在 macOS 图形应用的进程限制下可靠启动。日志默认写入 `~/Library/Logs/DSH WhaleConsole/dsh-whale-console.log`，用户也可以选择其他绝对路径或主目录相对路径。
 
+DSH `0.1.2` 使用浏览器会话交换保护 WebUI。对于启动器拥有的进程，WhaleConsole 会等待 DSH 输出本次专用的认证启动地址后再报告服务已就绪；界面只显示干净的本机回环地址，并仅在打开 WebUI WebView 时传递认证地址。日志文件权限会限制为当前 macOS 用户可读写。
+
 如果端口可访问但启动器没有对应的子进程，该服务会被识别为外部服务。WhaleConsole 可以打开它，但不会停止或重启它。
 
 WebUI 窗口使用独立标签，并且不具备任何 Tauri 命令权限。主窗口可以隐藏到菜单栏；选择退出时会执行进程清理。
@@ -64,7 +66,7 @@ WebUI 窗口使用独立标签，并且不具备任何 Tauri 命令权限。主�
 
 ## 兼容性
 
-- DSH：`0.1.1-rc.2`
+- DSH：`0.1.2-rc.1`
 - Node.js：`^22.19.0 || >=24.0.0`
 - pnpm：已测试 `11.7.0` 与 `11.24.0`
 - macOS：12 或更高版本，Preview 产物为 arm64

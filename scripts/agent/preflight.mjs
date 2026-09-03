@@ -13,6 +13,8 @@ const dshArg = args.find(value => value.startsWith('--dsh-repo='))
 const dshRepoInput = dshArg?.slice('--dsh-repo='.length) || process.env.DSH_REPO
 const dshRepo = dshRepoInput ? resolve(dshRepoInput) : null
 const rootManifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
+const pluginManifest = JSON.parse(await readFile(resolve(root, 'packages/plugin/package.json'), 'utf8'))
+const expectedDshVersion = pluginManifest.peerDependencies['@deepseek-ai/dsh-settings']
 const results = []
 const commandEnvironment = {
   ...process.env,
@@ -97,6 +99,17 @@ if (dshRepo) {
   if (manifestExists) {
     const dshManifest = JSON.parse(await readFile(manifest, 'utf8'))
     const hasDshScript = typeof dshManifest.scripts?.dsh === 'string'
+    const compatibleVersion = dshManifest.version === expectedDshVersion
+    add(
+      'dsh-version',
+      compatibleVersion ? 'ok' : 'error',
+      compatibleVersion
+        ? `DSH version: ${dshManifest.version}`
+        : `DSH version ${String(dshManifest.version)} is incompatible; this Preview requires ${String(expectedDshVersion)}.`,
+      compatibleVersion
+        ? `DSH 版本：${dshManifest.version}`
+        : `DSH 版本 ${String(dshManifest.version)} 不兼容；当前 Preview 要求 ${String(expectedDshVersion)}。`,
+    )
     add(
       'dsh-checkout-command',
       hasDshScript ? 'ok' : 'error',

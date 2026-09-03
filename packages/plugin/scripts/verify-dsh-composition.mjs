@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from 'node:child_process'
-import { mkdtempSync, readdirSync, rmSync } from 'node:fs'
+import { mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { createServer } from 'node:net'
 import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -9,8 +9,13 @@ const pluginRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const workspaceRoot = resolve(pluginRoot, '../..')
 const tsc = resolve(workspaceRoot, 'node_modules/.bin/tsc')
 const dshRepo = process.env.DSH_REPO
+const expectedDshVersion = '0.1.2-rc.1'
 if (!dshRepo) {
-  throw new Error('Set DSH_REPO to a DeepSeek Harness 0.1.1-rc.2 checkout before running this test.')
+  throw new Error(`Set DSH_REPO to a DeepSeek Harness ${expectedDshVersion} checkout before running this test.`)
+}
+const dshManifest = JSON.parse(readFileSync(resolve(dshRepo, 'package.json'), 'utf8'))
+if (dshManifest.version !== expectedDshVersion) {
+  throw new Error(`Expected DSH ${expectedDshVersion}, found ${String(dshManifest.version)} at ${dshRepo}.`)
 }
 
 const scratch = mkdtempSync(join(tmpdir(), 'dsh-whale-console-composition-'))
@@ -42,12 +47,16 @@ async function freePort() {
   return port
 }
 
-async function waitFor(url, timeoutMs = 90_000) {
+function redacted(text) {
+  return text.replace(/([?&]token=)[^\s)]+/gu, '$1<redacted>')
+}
+
+async function waitFor(url, options = {}, timeoutMs = 90_000) {
   const deadline = Date.now() + timeoutMs
   let lastError
   while (Date.now() < deadline) {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, options)
       if (response.ok) return response
       lastError = new Error(`${url} returned ${response.status}`)
     } catch (error) {
@@ -56,6 +65,19 @@ async function waitFor(url, timeoutMs = 90_000) {
     await new Promise(resolveWait => setTimeout(resolveWait, 500))
   }
   throw lastError ?? new Error(`Timed out waiting for ${url}`)
+}
+
+async function waitForLaunchUrl(output, process, timeoutMs = 90_000) {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    const match = /dsh web: (http:\/\/[^\s]+)/u.exec(output())
+    if (match?.[1] !== undefined) return match[1]
+    if (process.exitCode !== null) {
+      throw new Error(`DSH exited before WebUI became ready (${String(process.exitCode)}).\n${redacted(output())}`)
+    }
+    await new Promise(resolveWait => setTimeout(resolveWait, 250))
+  }
+  throw new Error(`Timed out waiting for the authenticated DSH launch URL.\n${redacted(output())}`)
 }
 
 try {
@@ -88,12 +110,26 @@ try {
   child.stdout.on('data', chunk => { diagnostics += chunk.toString() })
   child.stderr.on('data', chunk => { diagnostics += chunk.toString() })
 
-  const index = await waitFor(`http://127.0.0.1:${port}/`)
-  const html = await index.text()
-  if (!html.includes('/plugins/dsh-whale-console/client.js')) {
-    throw new Error(`WhaleConsole client is missing from the DSH boot graph.\n${diagnostics}`)
+  const launchUrl = await waitForLaunchUrl(() => diagnostics, child)
+  const exchange = await fetch(launchUrl, { redirect: 'manual' })
+  if (exchange.status !== 303) {
+    throw new Error(`DSH browser-session exchange returned ${exchange.status}.\n${redacted(diagnostics)}`)
   }
-  const bundle = await waitFor(`http://127.0.0.1:${port}/plugins/dsh-whale-console/client.js`)
+  const setCookie = exchange.headers.get('set-cookie')
+  if (setCookie === null) {
+    throw new Error(`DSH browser-session exchange omitted Set-Cookie.\n${redacted(diagnostics)}`)
+  }
+  const cookie = setCookie.split(';', 1)[0]
+  const origin = new URL(launchUrl).origin
+  const authenticated = { headers: { cookie } }
+  const index = await waitFor(`${origin}/`, authenticated)
+  const html = await index.text()
+  const encodedBundlePath = /\/plugins\/\?\?[^"'<>]*dsh-whale-console\/client\.js[^"'<>]*/u.exec(html)?.[0]
+  if (encodedBundlePath === undefined) {
+    throw new Error(`WhaleConsole client is missing from the DSH boot graph.\n${redacted(diagnostics)}`)
+  }
+  const bundlePath = encodedBundlePath.replaceAll('&amp;', '&')
+  const bundle = await waitFor(new URL(bundlePath, origin), authenticated)
   const source = await bundle.text()
   if (
     !source.includes('window.__ModuleLoader__.load')
@@ -103,7 +139,7 @@ try {
   ) {
     throw new Error('WhaleConsole client artifact is not a lazy-CJS module-loader factory.')
   }
-  process.stdout.write(`WhaleConsole composed successfully with DSH at http://127.0.0.1:${port}/\n`)
+  process.stdout.write(`WhaleConsole composed successfully with DSH at ${origin}/\n`)
 } finally {
   if (child?.pid) {
     try {

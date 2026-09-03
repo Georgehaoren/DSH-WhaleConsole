@@ -1,6 +1,6 @@
 [package]
 name = "dsh-whale-console-launcher"
-version = "0.2.1-preview.1"
+version = "0.3.0-preview.1"
 description = "Unofficial macOS launcher for DSH WebUI"
 authors = ["DSH WhaleConsole contributors"]
 license = "MIT"
