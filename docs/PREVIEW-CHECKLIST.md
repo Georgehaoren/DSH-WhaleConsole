@@ -9,7 +9,7 @@ English | [简体中文](PREVIEW-CHECKLIST.zh-CN.md)
 - [x] Lazy-CJS client factory generated.
 - [x] Host settings namespace and browser settings card use the same key.
 - [x] Additive slots only; no root or core surface replacement.
-- [x] Real DSH profile composition verified against `0.1.1-rc.2`.
+- [x] Real DSH profile composition verified against `0.1.2-rc.1`.
 - [x] Client entry appears in the DSH boot graph and is served successfully.
 - [x] Launcher process ownership distinguishes internal and external services.
 - [x] Application exit cleans up the owned process group.

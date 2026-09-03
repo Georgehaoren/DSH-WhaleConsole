@@ -14,6 +14,7 @@ export interface ServiceStatus {
   phase: ServicePhase
   pid?: number
   url: string
+  launchUrl?: string
   message: string
   owned: boolean
   logPath: string

@@ -86,7 +86,7 @@ export default function App() {
           onStart={() => launcher.act('start')}
           onStop={() => launcher.act('stop')}
           onRestart={() => launcher.act('restart')}
-          onOpen={() => launcherBridge.openWebui(launcher.status.url)}
+          onOpen={() => launcherBridge.openWebui(launcher.status.launchUrl ?? launcher.status.url)}
           onLogs={openLogs}
         />
       </div>

@@ -17,7 +17,7 @@ DSH WhaleConsole（中文名：DSH 鲸控台）是一款非官方的 DeepSeek Ha
 - 通过官方增量插槽添加角色悬浮层、侧栏入口与插件设置卡片。
 - 通过 DSH 设置命名空间保存 WhaleConsole 配置。
 
-`0.2.1-preview.1` 的兼容基线为 DSH `0.1.1-rc.2`，Node.js `^22.19.0 || >=24.0.0`。
+`0.3.0-preview.1` 的兼容基线为 DSH `0.1.2-rc.1`，Node.js `^22.19.0 || >=24.0.0`。DSH 候选版本可能带来破坏性的插件 API 变化，因此 WhaleConsole 会明确限定兼容版本，并通过真实 profile 组合进行验证。
 
 ## 内置皮肤
 
@@ -101,7 +101,7 @@ pnpm --filter @dsh-whale-console/launcher tauri:dev
 
 日志默认写入 `~/Library/Logs/DSH WhaleConsole/dsh-whale-console.log`。首次启动时会自动创建目录，也可以在设置中改为其他绝对路径或 `~/...` 路径。
 
-从 Finder 启动时，WhaleConsole 会把登录 Shell 的 `PATH` 传给 DSH，确保包管理器脚本能够找到 Node.js。启动器还会为源码目录中的 WebUI 文件监听启用轮询，以避开 macOS 图形应用通常继承的较低文件描述符限制。
+从 Finder 启动时，WhaleConsole 会把登录 Shell 的 `PATH` 传给 DSH，确保包管理器脚本能够找到 Node.js。启动器还会为源码目录中的 WebUI 文件监听启用轮询，以避开 macOS 图形应用通常继承的较低文件描述符限制。配合 DSH `0.1.2` 时，启动器会从自己创建的 DSH 进程输出中读取本次专用的认证启动地址，用于首次进入 WebUI；界面仍只显示干净的本机回环地址。
 
 ## 安装插件
 
@@ -110,7 +110,7 @@ pnpm --filter @dsh-whale-console/launcher tauri:dev
 ```sh
 pnpm --filter dsh-whale-console run pack
 cd /absolute/path/to/deepseek-harness
-pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
+pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.3.0-preview.1.tgz
 ```
 
 这里使用 DSH 源码目录中的 `pnpm dsh`，因为源码安装环境不一定存在全局 `dsh` 命令。安装会更新 `~/.dsh/profiles/web` 和 pnpm Store；使用本地压缩包时，其绝对路径和完整性校验还会记录进 profile 与锁文件，因此请在卸载或改装发布版之前保留该文件及路径，也不要用不同内容覆盖同版本、同文件名的压缩包。

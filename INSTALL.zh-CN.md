@@ -7,7 +7,7 @@ DSH WhaleConsole（中文名：DSH 鲸控台）Preview 以源码形式分发。�
 ## 支持范围
 
 - Apple Silicon（`arm64`）上的 macOS 12 或更高版本。
-- 安装插件和执行组合测试时需要 DSH `0.1.1-rc.2` 源码目录。
+- 安装插件和执行组合测试时需要 DSH `0.1.2-rc.1` 源码目录。
 - Node.js `^22.19.0 || >=24.0.0`、pnpm `11.24.0`、稳定版 Rust（已使用 `1.98.0` 验证）与 Xcode Command Line Tools。
 - 此流程不会关闭 Gatekeeper、制作 DMG、签名应用或执行公证。
 

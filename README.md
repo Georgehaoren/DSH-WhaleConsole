@@ -17,7 +17,7 @@ DSH WhaleConsole is an unofficial macOS launcher and WebUI theme plugin for Deep
 - Add a mascot overlay, sidebar shortcut, and plugin settings card through official additive slots.
 - Persist WhaleConsole settings through the DSH settings namespace.
 
-The baseline for `0.2.1-preview.1` is DSH `0.1.1-rc.2` and Node.js `^22.19.0 || >=24.0.0`.
+The baseline for `0.3.0-preview.1` is DSH `0.1.2-rc.1` and Node.js `^22.19.0 || >=24.0.0`. DSH release candidates may introduce breaking plugin API changes; WhaleConsole compatibility is intentionally version-specific and verified through real profile composition.
 
 ## Built-in Skins
 
@@ -101,7 +101,7 @@ The launcher discovers `pnpm` and Node.js from the login shell and defaults to `
 
 Logs default to `~/Library/Logs/DSH WhaleConsole/dsh-whale-console.log`. The directory is created on first start and can be changed to another absolute or `~/...` path in Settings.
 
-When launched from Finder, WhaleConsole passes the login-shell `PATH` to DSH so package-manager scripts can find Node.js. It also enables polling for the source checkout's WebUI watchers to avoid the lower file-descriptor limit commonly inherited by macOS GUI applications.
+When launched from Finder, WhaleConsole passes the login-shell `PATH` to DSH so package-manager scripts can find Node.js. It also enables polling for the source checkout's WebUI watchers to avoid the lower file-descriptor limit commonly inherited by macOS GUI applications. With DSH `0.1.2`, the launcher reads the process-specific authenticated launch URL from its owned DSH output and uses it for the first WebUI entry while continuing to display the clean loopback address.
 
 ## Install the Plugin
 
@@ -110,7 +110,7 @@ The package is not published to npm yet. Build a local tarball and install it in
 ```sh
 pnpm --filter dsh-whale-console run pack
 cd /absolute/path/to/deepseek-harness
-pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.2.1-preview.1.tgz
+pnpm dsh plugin --profile web add /absolute/path/to/dsh-whale-console-0.3.0-preview.1.tgz
 ```
 
 This uses `pnpm dsh` from the DSH checkout because source installations do not necessarily provide a global `dsh` command. Installation updates `~/.dsh/profiles/web` and the pnpm store. A local tarball's absolute path and integrity are also recorded in the profile and lockfile, so keep that file at the same path until the plugin is removed or replaced by a registry release, and do not overwrite the same version and filename with different contents.

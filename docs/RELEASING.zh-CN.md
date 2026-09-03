@@ -33,7 +33,7 @@ pnpm build:preview -- --skip-install --lang=zh-CN
 
 ## 4. 发布
 
-1. 从干净的 `main` 分支创建形如 `v0.2.1-preview.1` 的附注标签。
+1. 从干净的 `main` 分支创建形如 `v0.3.0-preview.1` 的附注标签。
 2. 推送分支与标签。
 3. 使用对应更新日志创建 GitHub Preview Release。
 4. 源码型 GitHub Release 不附加本地构建的插件包、未签名应用和校验文件。

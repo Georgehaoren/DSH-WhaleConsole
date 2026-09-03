@@ -17,7 +17,7 @@ Use this command after the Preview package is published. For local source builds
 
 ## Compatibility
 
-- DSH: `0.1.1-rc.2`
+- DSH: `0.1.2-rc.1`
 - Node.js: `^22.19.0 || >=24.0.0`
 - Platform: DSH WebUI
 

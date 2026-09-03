@@ -7,7 +7,7 @@ DSH WhaleConsole Preview is distributed as source. The supported path builds an 
 ## Supported Preview
 
 - macOS 12 or newer on Apple Silicon (`arm64`).
-- DSH `0.1.1-rc.2` checkout for plugin installation and composition testing.
+- DSH `0.1.2-rc.1` checkout for plugin installation and composition testing.
 - Node.js `^22.19.0 || >=24.0.0`, pnpm `11.24.0`, stable Rust (verified with `1.98.0`), and Xcode Command Line Tools.
 - This workflow does not disable Gatekeeper, create a DMG, sign the app, or notarize it.
 

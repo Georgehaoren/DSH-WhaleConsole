@@ -2,6 +2,15 @@
 
 English | [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.3.0-preview.1
+
+- Updated the compatibility baseline to DeepSeek Harness `0.1.2-rc.1`.
+- Migrated Host settings registration from the removed top-level helpers to `SettingsProvider.installSection`.
+- Replaced the removed `dsh-client-runtime` context type with the current Cordis client context and explicit renderer contract.
+- Aligned DSH peers, Cordis, Schemastery, and the plugin browser build with the upstream React 18 runtime.
+- Updated the launcher and composition test for DSH `0.1.2` browser-session token exchange while keeping the displayed service address token-free.
+- Made preflight and composition tests reject incompatible DSH checkouts, and added a regression test for provider-scoped settings installation.
+
 ## 0.2.1-preview.1
 
 - Established the public project identity as DSH WhaleConsole before the first source release.

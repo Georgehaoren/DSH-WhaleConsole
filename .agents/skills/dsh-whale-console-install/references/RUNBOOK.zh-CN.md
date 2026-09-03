@@ -34,7 +34,7 @@ pnpm --filter @dsh-whale-console/launcher run tauri:build:app
 
 ## 确认 DSH 命令与权限
 
-优先使用用户明确指定、启动器已经配置或 `DSH_REPO` 指向的兼容 DSH checkout。只有在实际检查后才能采用 `~/deepseek-harness` 等默认候选；不要为了安装插件自行 clone、pull 或切换 DSH 版本。源码环境不保证存在全局 `dsh`，因此默认在已确认的 checkout 中调用 `pnpm dsh`。只有 `command -v dsh` 确实成功时，裸 `dsh` 才是可选入口。
+优先使用用户明确指定、启动器已经配置或 `DSH_REPO` 指向的兼容 DSH checkout。当前 Preview 要求 DSH `0.1.2-rc.1`；请使用 `--dsh-repo=/absolute/path` 运行预检，没有组合证据时不得把其他候选版本视为兼容。只有在实际检查后才能采用 `~/deepseek-harness` 等默认候选；不要为了安装插件自行 clone、pull 或切换 DSH 版本。源码环境不保证存在全局 `dsh`，因此默认在已确认的 checkout 中调用 `pnpm dsh`。只有 `command -v dsh` 确实成功时，裸 `dsh` 才是可选入口。
 
 安装前识别并申请最小范围写权限：DSH checkout、目标 `~/.dsh/profiles/web` 和该 profile 当前使用的 pnpm Store。Store 路径可从已有 `node_modules/.modules.yaml` 的 `storeDir` 读取；不要通过改写它、强制重装依赖或迁移 Store 来绕过权限问题。无法取得写权限时，停止并把经过确认的完整安装命令交给用户在普通终端执行。
 
@@ -75,7 +75,7 @@ DSH_REPO=/absolute/path/to/deepseek-harness \
   pnpm --filter dsh-whale-console test:composition
 ```
 
-测试可能在 DSH 源码目录创建包管理器临时文件。如果执行环境有权限限制，应先取得对应文件系统权限。
+测试可能在 DSH 源码目录创建包管理器临时文件。如果执行环境有权限限制，应先取得对应文件系统权限。DSH `0.1.2` 使用浏览器会话交换保护 WebUI；测试会使用当前进程的启动令牌，只在内存中保留交换得到的 Cookie，并在失败信息中遮盖令牌。
 
 ## 更新与重新构建
 
@@ -89,7 +89,7 @@ DSH_REPO=/absolute/path/to/deepseek-harness \
 - 插件失败：依次检查压缩包内容、profile 依赖与 Bundle 列表、已安装包元数据、DSH 组合配置、启动入口和客户端路由。
 - `plugin list` 报 SQLite `unable to open database file`：先检查当前 pnpm Store 的最小写权限，不要据此认定 Store 已损坏，也不要强制迁移或重装已有插件。
 - `--dump-config` 报 profile 写入 `EPERM`：说明组合准备需要写 `cordis.yml`；降级为文件检查并报告未完成组合验证，不要声称两者等价。
-- 启动器启动失败：检查配置的持久日志目录和当前服务所有权状态。
+- 启动器启动失败：检查配置的持久日志目录和当前服务所有权状态。在 DSH `0.1.2` 中，直接请求本机地址返回 `401` 表示尚未完成浏览器会话交换；应确认启动器拥有的进程已经输出认证启动地址，但在任何报告中都必须遮盖令牌。
 - 打包失败：使用 `--bundles app`；DMG 制作不属于源码分发 Preview 契约。
 
 不要通过关闭安全机制、编辑依赖产物、删除锁文件或重装无关工具来解决诊断问题。
