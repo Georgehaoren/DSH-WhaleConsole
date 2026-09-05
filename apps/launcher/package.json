@@ -24,7 +24,7 @@
     "@dsh-whale-console/skins": "workspace:*",
     "@tauri-apps/cli": "2.11.4",
     "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
+    "@types/react-dom": "^19.2.5",
     "@vitejs/plugin-react": "latest",
     "vite": "8.2.2"
   }
