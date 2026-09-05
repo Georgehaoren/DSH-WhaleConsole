@@ -73,7 +73,7 @@
     "@deepseek-ai/dsh-client-ui-sidebar": "0.1.2-rc.1",
     "@deepseek-ai/dsh-client-ui-theme": "0.1.2-rc.1",
     "@deepseek-ai/dsh-settings": "0.1.2-rc.1",
-    "react": "^18.2.0"
+    "react": "^19.2.8"
   },
   "peerDependenciesMeta": {
     "@deepseek-ai/cordis": { "optional": true },
@@ -96,10 +96,10 @@
     "@deepseek-ai/dsh-client-ui-sidebar": "0.1.2-rc.1",
     "@deepseek-ai/dsh-client-ui-theme": "0.1.2-rc.1",
     "@deepseek-ai/dsh-settings": "0.1.2-rc.1",
-    "@types/react": "~18.3.1",
+    "@types/react": "~19.2.18",
     "@types/react-dom": "~18.3.0",
     "esbuild": "^0.28.2",
-    "react": "^18.2.0"
+    "react": "^19.2.8"
   },
   "keywords": ["deepseek", "deepseek-harness", "dsh", "plugin", "skin", "theme", "webui", "launcher"]
 }
